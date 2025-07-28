@@ -26,7 +26,7 @@
     <developers>
          <developer>
              <name>Florian Lestic</name>
-             <email>florian.lestic@gmail.com</email>
+             <email>florian.lestic@flcit.org</email>
              <organization>FLC</organization>
              <organizationUrl>https://www.flcit.org</organizationUrl>
          </developer>
@@ -54,11 +54,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <spring.boot.version>3.5.4</spring.boot.version>
         <!-- Internal dependencies version -->
-        <org.flcit.springboot.commons.core.version>1.0.0-SNAPSHOT</org.flcit.springboot.commons.core.version>
-        <!-- Ajoute les endpoints Actuator pourles properties, les threads pool et les listeners -->
-        <org.flcit.springboot.commons.actuator.version>1.0.0-SNAPSHOT</org.flcit.springboot.commons.actuator.version>
-        <!-- Ajoute la documentation Swagger OpenAPI -->
-        <org.flcit.springboot.web.openapi.version>1.0.0-SNAPSHOT</org.flcit.springboot.web.openapi.version>
         <!-- External dependencies version -->
     </properties>
 
@@ -104,27 +99,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
-        </dependency>
-
-        <!-- Core -->
-        <dependency>
-            <groupId>org.flcit.springboot.commons</groupId>
-            <artifactId>springboot-commons-core</artifactId>
-            <version>${org.flcit.springboot.commons.core.version}</version>
-        </dependency>
-
-        <!-- Actuator -->
-        <dependency>
-            <groupId>org.flcit.springboot.commons</groupId>
-            <artifactId>springboot-commons-actuator</artifactId>
-            <version>${org.flcit.springboot.commons.actuator.version}</version>
-        </dependency>
-
-        <!-- OpenAPI -->
-        <dependency>
-            <groupId>org.flcit.springboot.web</groupId>
-            <artifactId>springboot-web-openapi</artifactId>
-            <version>${org.flcit.springboot.web.openapi.version}</version>
         </dependency>
 
         <!-- Logging -->
