@@ -1,0 +1,30 @@
+<configuration debug="false">
+    <!-- Inject Spring properties -->
+    <springProperty scope="context" name="server.hostname" source="info.server.hostname"/>
+    <springProperty scope="context" name="server.port" source="info.server.port"/>
+    <springProperty scope="context" name="server.environment" source="info.server.environment"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/data/log/springboot/${server.environment}/${project.parent.artifactId}/${project.parent.artifactId}_${server.port}/${server.hostname}_${server.environment}_${project.parent.artifactId}_${server.port}_springboot.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/data/log/springboot/${server.environment}/${project.parent.artifactId}/${project.parent.artifactId}_${server.port}/${server.hostname}_${server.environment}_${project.parent.artifactId}_${server.port}_%d{yyyy-MM-dd}_springboot.log.gz</fileNamePattern>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %-5level [%thread] %class \(%file:%line\) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.flcit" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.xnio" level="ERROR"/>
+    <logger name="io.undertow" level="ERROR"/>
+    <logger name="org.apache" level="ERROR"/>
+
+    <root level="ERROR">
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

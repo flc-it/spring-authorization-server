@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.flcit.springboot.authorization.server</groupId>
+    <artifactId>springboot-authorization-server</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>cfg</module>
+        <module>app</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>springboot-authorization-server</name>
+    <description>Projet d'un Authorization Server</description>
+    <url>https://github.com/flc-it/springboot-authorization-server</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+         <developer>
+             <name>Florian Lestic</name>
+             <email>florian.lestic@gmail.com</email>
+             <organization>FLC</organization>
+             <organizationUrl>https://www.flcit.org</organizationUrl>
+         </developer>
+    </developers>
+
+    <!-- Paramètres gestionnaire de version -->
+    <scm>
+        <connection>scm:git:git://github.com/flc-it/springboot-authorization-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com/flc-it/springboot-authorization-server.git</developerConnection>
+        <url>https://github.com/flc-it/springboot-authorization-server</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <!-- Paramètres gestionnaire de ticket -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/flc-it/springboot-authorization-server/issues</url>
+    </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <spring.boot.version>3.5.4</spring.boot.version>
+        <!-- Internal dependencies version -->
+        <org.flcit.springboot.commons.core.version>1.0.0-SNAPSHOT</org.flcit.springboot.commons.core.version>
+        <!-- Ajoute les endpoints Actuator pourles properties, les threads pool et les listeners -->
+        <org.flcit.springboot.commons.actuator.version>1.0.0-SNAPSHOT</org.flcit.springboot.commons.actuator.version>
+        <!-- Ajoute la documentation Swagger OpenAPI -->
+        <org.flcit.springboot.web.openapi.version>1.0.0-SNAPSHOT</org.flcit.springboot.web.openapi.version>
+        <!-- External dependencies version -->
+    </properties>
+
+    <!-- dependencies management -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Import dependency management from Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- Spring boot fat jar -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Undertow no websockets -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.undertow</groupId>
+                    <artifactId>undertow-websockets-jsr</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+        </dependency>
+
+        <!-- Core -->
+        <dependency>
+            <groupId>org.flcit.springboot.commons</groupId>
+            <artifactId>springboot-commons-core</artifactId>
+            <version>${org.flcit.springboot.commons.core.version}</version>
+        </dependency>
+
+        <!-- Actuator -->
+        <dependency>
+            <groupId>org.flcit.springboot.commons</groupId>
+            <artifactId>springboot-commons-actuator</artifactId>
+            <version>${org.flcit.springboot.commons.actuator.version}</version>
+        </dependency>
+
+        <!-- OpenAPI -->
+        <dependency>
+            <groupId>org.flcit.springboot.web</groupId>
+            <artifactId>springboot-web-openapi</artifactId>
+            <version>${org.flcit.springboot.web.openapi.version}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        <!-- Tests -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <envClassifier>dev</envClassifier>
+            </properties>
+        </profile>
+        <profile>
+            <id>liv</id>
+            <properties>
+                <envClassifier>liv</envClassifier>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <configuration>
+                        <classifier>exec</classifier>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <!-- Repackages les JAR et WAR en jar exécutable. -->
+                                <goal>repackage</goal>
+                                <!-- Génère le fichier build-info.properties pour le endpoint /actuator/info -->
+                                <goal>build-info</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.2</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <includeOnlyProperties>
+                        <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.id$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.time$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.tags$</includeOnlyProperty>
+                    </includeOnlyProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                    <delimiters>
+                        <delimiter>${*}</delimiter>
+                    </delimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

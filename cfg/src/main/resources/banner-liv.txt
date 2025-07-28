@@ -1,0 +1,2 @@
+
+${Ansi.GREEN}Application : ${info.application.name} (v${info.application.version}) - Using Spring Boot${spring-boot.formatted-version}
